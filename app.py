@@ -164,8 +164,19 @@ def plot_radar_chart(punteggi_dim, colore_riempimento):
 
 def salva_su_google_sheet(dati_anagrafici, risposte, totale, livello):
     try:
+        # Recupera i segreti
         scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-        creds_dict = st.secrets["gcp_service_account"]
+        
+        # --- MODIFICA FONDAMENTALE QUI ---
+        # Convertiamo esplicitamente l'oggetto secrets in un dizionario Python standard
+        # Questo risolve spesso l'errore "No key could be detected"
+        creds_dict = dict(st.secrets["gcp_service_account"])
+        
+        # Correggiamo eventuali errori di formattazione della private_key (i \n a volte vengono letti male)
+        if "\\n" in creds_dict["private_key"]:
+             creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+        # ---------------------------------
+
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
         client = gspread.authorize(creds)
 
@@ -186,9 +197,11 @@ def salva_su_google_sheet(dati_anagrafici, risposte, totale, livello):
         sheet.append_row(row)
         return True
     except Exception as e:
-        st.error(f"Errore nel salvataggio: {e}")
+        st.error(f"Errore tecnico nel salvataggio: {e}")
+        # Stampa l'errore nella console di Streamlit (visibile solo a te nei logs) per debug
+        print(f"DEBUG ERROR: {e}")
         return False
-
+        
 # -----------------------------------------------------------------------------
 # 4. MAIN APP
 # -----------------------------------------------------------------------------
