@@ -198,9 +198,9 @@ def main():
 
     try:
         # Assicurati che il file 'image_2.png' sia nella stessa cartella
-        st.image("image_2.png", use_column_width=True)
+        st.image("GENERA Logo Colore.png", use_column_width=True)
     except FileNotFoundError:
-        st.error("Logo non trovato. Caricare il file 'image_2.png'.")
+        st.error("Logo non trovato. Caricare il file 'GENERA Logo Colore.png'.")
 
     st.markdown("---")
 
