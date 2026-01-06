@@ -169,8 +169,8 @@ def salva_su_google_sheet(dati_anagrafici, risposte, totale, livello):
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
         client = gspread.authorize(creds)
 
-        sheet_name = st.secrets["Génera_DB_ISA-Q"]
-        sheet = client.open(Génera_DB_ISA-Q).sheet1
+        sheet_name = st.secrets["private_sheet_name"]
+        sheet = client.open(sheet_name).sheet1
 
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         valori_risposte = [risposte[q['id']] for q in DOMANDE]
